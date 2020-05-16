@@ -1,0 +1,34 @@
+version: "3.3"
+services:
+  mysql_master:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    ports:
+      - "3333:3306"
+    volumes:
+      - "/opt/workspace/mysql_cluster/master/my.cnf:/etc/mysql/conf.d/my.cnf"
+
+  mysql_slave1:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    volumes:
+      - "/opt/workspace/mysql_cluster/slave1/my.cnf:/etc/mysql/conf.d/my.cnf"
+      - "/opt/workspace/mysql_cluster/init/:/docker-entrypoint-initdb.d/"
+    depends_on:
+      - mysql_master
+    links:
+      - mysql_master
+
+  mysql_slave2:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    volumes:
+      - "/opt/workspace/mysql_cluster/slave2/my.cnf:/etc/mysql/conf.d/my.cnf"
+      - "/opt/workspace/mysql_cluster/init/:/docker-entrypoint-initdb.d/"
+    depends_on:
+      - mysql_master
+    links:
+      - mysql_master
