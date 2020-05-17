@@ -86,7 +86,3 @@ services:
       - "80:80"
     volumes:
       - "/opt/workspace/nginx/nginx.conf:/etc/nginx/nginx.conf"
-
-
-
-
